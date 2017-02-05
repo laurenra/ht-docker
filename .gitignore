@@ -1,6 +1,6 @@
 #IntelliJ
 *.iml
 .idea/
-mybyu-docker-private*
+ht-docker-private*
 docker*.sh
 
