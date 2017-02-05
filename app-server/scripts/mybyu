@@ -1,0 +1,65 @@
+#!/bin/sh
+#Source directories
+BASESRCDIR="/usr/share/wars"
+JARSRCDIR=$BASESRCDIR
+WARSRCDIR=$BASESRCDIR
+
+#Destination directories
+BASEDESTDIR="/opt/tomcat"
+JARDESTDIR=$BASEDESTDIR/"shared/lib"
+WARDESTDIR=$BASEDESTDIR/"webapps"
+
+if [ $# -ne 1 ]; then
+    echo "Copies compiled MyBYU .war and .jar files to $WARDESTDIR and $JARDESTDIR"
+    echo "respectively from $BASESRCDIR which is mapped to a directory shared by the external host."
+    echo " "
+	echo "Usage: mybyu [ init | min | allwars | all | remove ]"
+	echo "  init     - Copy required .jar files to Tomcat directory $JARDESTDIR."
+	echo "  min      - Copy minimal set of .war files, just the portlets on Welcome page."
+	echo "  allwars  - Copy all .war files to Tomcat directory $WARDESTDIR."
+	echo "  all      - Copy all .jar and portlet .war files to Tomcat directories."
+	echo "  remove   - Remove all .war files from Tomcat directory $WARDESTDIR."
+	echo " "
+	echo "Note:  Tomcat must be restarted when using 'init' or 'all' so the .jar"
+	echo "       files will be loaded (on Tomcat startup)."
+    exit
+fi
+
+OPTION1="${1}"
+
+case $OPTION1 in
+    init)
+        echo "copying MyBYU .jar files to $JARDESTDIR..."
+        cp -p $JARSRCDIR/*.jar $JARDESTDIR/
+        ;;
+    min)
+        echo "copying minimal set of MyBYU .war files to $WARDESTDIR..."
+        cp -p $WARSRCDIR/uPortal.war $WARDESTDIR/
+        cp -p $WARSRCDIR/AnnouncementsPortlet.war $WARDESTDIR/
+        cp -p $WARSRCDIR/BookmarksPortlet.war $WARDESTDIR/
+        cp -p $WARSRCDIR/CalendarPortlet.war $WARDESTDIR/
+        cp -p $WARSRCDIR/FeedbackPortlet.war $WARDESTDIR/
+        cp -p $WARSRCDIR/NewsReaderPortlet.war $WARDESTDIR/
+        cp -p $WARSRCDIR/NotificationPortlet.war $WARDESTDIR/
+        cp -p $WARSRCDIR/ResourceServingWebapp.war $WARDESTDIR/
+        cp -p $WARSRCDIR/SimpleContentPortlet.war $WARDESTDIR/
+        cp -p $WARSRCDIR/TabbedSearchPortlet.war $WARDESTDIR/
+        cp -p $WARSRCDIR/WeatherPortlet.war $WARDESTDIR/
+        cp -p $WARSRCDIR/WebProxyPortlet.war $WARDESTDIR/
+        cp -p $WARSRCDIR/jasig-widget-portlets.war $WARDESTDIR/
+        cp -p $WARSRCDIR/launcher-portlet.war $WARDESTDIR/
+        cp -p $WARSRCDIR/twitter-portlet.war $WARDESTDIR/
+        ;;
+    allwars)
+        echo "copying all MyBYU .war files to $WARDESTDIR..."
+        cp -p $WARSRCDIR/*.war $WARDESTDIR/
+        ;;
+    all)
+        echo "copying all MyBYU .jar and .war files to Tomcat..."
+        cp -p $JARSRCDIR/*.jar $JARDESTDIR/
+        cp -p $WARSRCDIR/*.war $WARDESTDIR/
+        ;;
+    remove)
+        echo "removing MyBYU .war files from Tomcat ($WARDESTDIR)..."
+        rm -rf $WARDESTDIR/*.war;;
+esac

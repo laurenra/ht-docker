@@ -1,0 +1,87 @@
+#!/bin/bash
+SRCBASEDIR="$HOME/Work/Dev/Java/mybyu"
+DESTDIR="."
+
+if [ $# -lt 1 ]; then
+    echo "Copies compiled .war and .jar files from MyBYU project directories. If source and/or"
+    echo "destination directories aren't specified it copies to the current directory from the"
+    echo "project root directory specified with the SRCBASEDIR variable in this script, which is:"
+    echo " "
+    echo "  $SRCBASEDIR"
+    echo " "
+    echo "Usage: get-mybyu-files [options] all | {portlet.war}"
+    echo "  -d={dir}             copy files to {dir} destination, default is current directory"
+    echo "  --destination={dir}"
+    echo "  -s={dir}             copy files from {dir} PROJECT BASE directory"
+    echo "  --source={dir}"
+    echo "  all            get all .jar and .war files from PROJECT BASE/uportal-ear/target/uPortal/"
+    echo "  {portlet.war}  get just one {portlet.war} file from PROJECT BASE/uportal-portlets-overlay/..."
+    echo " "
+    echo "Example 1, copy all .jar and .war files from MyBYU project to current directory:"
+    echo "  get-mybyu-files all"
+    echo " "
+    echo "Example 2, copy specified .war file from MyBYU project to current directory:"
+    echo "  get-mybyu-files hrsPortlet.war"
+    echo " "
+    echo "Example 3, copy all .war files from /dev/mybyu project root to /my/dest/dir:"
+    echo "  get-mybyu-files -s=/dev/mybyu -d=/my/dest/dir all"
+    echo " "
+    echo 'NOTE: If you compiled and "pluto-ized" a portlet, copy the single .war file.'
+    echo '      The "all" option is used only after compiling the entire MyBYU project;'
+    echo '      for example, by running "ant deploy-war".'
+    exit
+fi
+
+# Get command line options
+for i in "$@"
+do
+case $i in
+    -s=*|--source=*)
+        SRCBASEDIR="${i#*=}"
+        shift # past argument
+        ;;
+    -d=*|--destination=*)
+        DESTDIR="${i#*=}"
+        shift # past argument
+        ;;
+    *)
+        # option (or unknown)
+        OPTION="$i"
+        ;;
+esac
+done
+
+SRCDIR="$SRCBASEDIR/uportal-ear/target/uPortal"
+WARBASEDIR="$SRCBASEDIR/uportal-portlets-overlay"
+UPORTALBASEDIR="$SRCBASEDIR/uportal-war"
+
+case $OPTION in
+    all)
+        echo "copy ALL .jar and .war files"
+        echo "  from: $SRCDIR"
+        echo "  to:   $DESTDIR"
+        cp -p $SRCDIR/*.jar $DESTDIR
+        cp -p $SRCDIR/*.war $DESTDIR
+        ;;
+    *)
+        echo "copy $OPTION"
+        WARNAME=`echo $1 | rev | cut -d \/ -f 1 | rev | cut -d . -f 1`
+        echo "WARNAME = $WARNAME"
+        case $WARNAME in
+            "contacts-portlets")
+                WARDIR="$WARBASEDIR/ContactsPortlet";;
+            "esup-filemanager")
+                WARDIR="$WARBASEDIR/esupFilemanager";;
+            "twitter-portlet")
+                WARDIR="$WARBASEDIR/esupTwitterPortlet";;
+            "uPortal")
+                WARDIR=$UPORTALBASEDIR;;
+            *)
+                WARDIR="$WARBASEDIR/$WARNAME";;
+        esac
+        echo "  from: $WARDIR/target"
+        echo "  to:   $DESTDIR"
+        cp -p $WARDIR/target/$OPTION $DESTDIR
+        ;;
+esac
+exit

@@ -1,0 +1,50 @@
+version: '2'
+
+services:
+  app-server:
+    build: ./app-server
+    image: ht/tomcat
+    container_name: htapp
+
+    networks:
+     - net
+
+#    expose:
+#     - "8009"
+
+    ports:
+     - "8080:8080" # "host:container"
+
+    volumes:
+     - ./app-server/private:/opt/tomcat/conf/private
+     #- ./app-server/shared/lib:/opt/tomcat/shared/lib
+     - ./app-server/wars:/usr/share/wars
+
+  web-server:
+    build: ./web-server
+    image: ht/apache
+    container_name: htweb
+#    hostname: localhost.byu.edu
+
+    depends_on:
+     - app-server
+
+    networks:
+     - net
+
+#    expose:
+#     - "80"
+#     - "443"
+
+    ports:
+     - "80:80" # "host:container"
+     - "443:443"
+     #- "8009:8009" # Tomcat Java
+     #- "8005:8005" # Tomcat shutdown
+
+    volumes:
+     - ./web-server/certs:/usr/local/apache2/conf/certs
+     #- ./web-server/public-html:/usr/local/apache2/htdocs
+
+networks:
+  net:

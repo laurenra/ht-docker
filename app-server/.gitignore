@@ -1,0 +1,7 @@
+jdbc
+private/*
+getwars*
+
+#Exclude everything under the "wars" directory except the README.md file used as a placeholder.
+wars/*
+!wars/README.md
