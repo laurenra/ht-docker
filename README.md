@@ -41,7 +41,7 @@ This assumes that you have the compiled .jar and .war files from the HT project 
 6. Log in to the shell of the app server container, the one that's running Tomcat:
 
     ```
-    docker exec -it mybyuapp /bin/sh
+    docker exec -it htapp /bin/sh
     ```
     
     (If you'd like you can run the setprompt script in the container to change the appearance of the prompt and create an alias for ll (ls -al).)
