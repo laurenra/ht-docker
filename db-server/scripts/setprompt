@@ -1,0 +1,107 @@
+#!/bin/sh
+#-------------- Bash script commands --------------#
+# \d  the date in "Weekday Month Date" format
+# \e  an ASCII escape character (033)
+# \h  the hostname up to the first `.'
+# \n  newline
+# \t  the current time in 24-hour HH:MM:SS format
+# \T  the current time in 12-hour HH:MM:SS format
+# \@  the current time in 12-hour am/pm format
+# \u  the username of the current user
+# \w  the current working directory
+# \[  begin a sequence of non-printing characters,
+#     which could be used to embed a terminal control
+#     sequence into the prompt
+# \]  end a sequence of non-printing characters
+
+#--- Set up ANSII color codes ---#
+
+#------ text colors ------#
+BLACK='30m'
+RED='31m'
+GREEN='32m'
+YELLOW='33m'
+BLUE='34m'
+MAGENTA='35m'
+CYAN='36m'
+WHITE='37m'
+
+#--- background colors ---#
+BG_BLACK='40;'
+BG_RED='41;'
+BG_GREEN='42;'
+BG_YELLOW='43;'
+BG_BLUE='44;'
+BG_MAGENTA='45;'
+BG_CYAN='46;'
+BG_WHITE='47;'
+
+#------ attributes -------#
+AT_NONE='0;'
+BOLD='1;'
+DIM='2;'
+BLINK='5;'
+REVERSE='7;'
+HIDDEN='8;'
+
+#----- special codes -----#
+COLOR='\033['
+RESET=$COLOR'0m'
+
+#----------------- define color combinations -----------------#
+# 1. You must start with $COLOR.
+# 2. Text color is always last and can optionally
+#    be prefaced with background or attribute or both
+#    but must always be in this order:
+#
+#    $COLOR(attribute)(background)(color)
+#
+#    The following are valid:
+#
+#    $COLOR(color)
+#    $COLOR(attribute)(color)
+#    $COLOR(attribute)(background)(color)
+#    $COLOR(background)(color)
+#
+#    For example:
+#
+#    MY_COLOR=$COLOR$RED
+#    MY_COLOR=$COLOR$BOLD$RED
+#    MY_COLOR=$COLOR$BOLD$BG_WHITE$RED
+#    MY_COLOR=$COLOR$BG_WHITE$RED
+#
+# 3. When done using color in a string, always $RESET.
+#    For example:
+#
+#    STR=$COLOR$RED"I am red "$RESET
+#    STR=$COLOR$RED"I am red "$RESET$COLOR$BLUE"I am blue"$RESET
+
+#--- My color combinations ---#
+TX_B_GREEN=$COLOR$BOLD$GREEN
+TX_B_RED=$COLOR$BOLD$RED
+TX_B_CYAN=$COLOR$BOLD$CYAN
+TX_B_YELLOW=$COLOR$BOLD$YELLOW
+
+#--- Set up date format ---#
+MY_DATE="\$(date '+%a %D %I:%M:%S%P')"
+
+#--- Set prompt characteristics ---#
+#MY_PROMPT="["$TX_B_GREEN$MY_DATE$RESET" "$TX_B_RED"\u"$RESET"@"$TX_B_CYAN"\h"$RESET":"$TX_B_YELLOW"\w"$RESET"]\n> "
+#MY_PROMPT="["$TX_B_GREEN$MY_DATE$RESET" "$TX_B_RED"\u"$RESET"@"$TX_B_CYAN"\h"$RESET":"$TX_B_YELLOW"\$PWD"$RESET"]\n> "
+#MY_PROMPT="["$TX_B_GREEN$MY_DATE$RESET" "$TX_B_RED"\u"$RESET"@"$TX_B_CYAN"docker"$RESET":"$TX_B_YELLOW"\$PWD"$RESET"]\n> "
+#MY_PROMPT=$TX_B_GREEN"\$PWD"$RESET"> "
+#MY_PROMPT=$TX_B_RED"\u"$RESET"@"$TX_B_CYAN"\h"$RESET":"$TX_B_YELLOW"\w"$RESET"> "
+MY_PROMPT=$TX_B_RED"\u"$RESET"@"$TX_B_CYAN"\h"$RESET":"$TX_B_GREEN"\w"$RESET"> "
+
+#--- Show operating system and info ---#
+echo `uname -a`
+
+#--- Set Backspace to erase ---#
+#stty erase ^H
+
+#--- Set ll alias ---#
+alias ll='ls -al'
+
+#--- Set prompt ---#
+export PS1=$MY_PROMPT
+

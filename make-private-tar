@@ -8,6 +8,9 @@ tar rvf ht-docker-private.tar app-server/private/my-context.xml
 tar rvf ht-docker-private.tar app-server/private/my-env.sh
 tar rvf ht-docker-private.tar app-server/private/my-resources.xml
 tar rvf ht-docker-private.tar app-server/private/my-users.xml
+tar rvf ht-docker-private.tar db-server/initdb/ht-db-init.sql
+tar rvf ht-docker-private.tar db-server/scripts/setll
+tar rvf ht-docker-private.tar db-server/scripts/setprompt
 tar rvf ht-docker-private.tar web-server/certs/DigiCertCA.crt
 tar rvf ht-docker-private.tar web-server/certs/localhost_byu_edu.crt
 tar rvf ht-docker-private.tar web-server/certs/private/localhost_byu_edu.key
