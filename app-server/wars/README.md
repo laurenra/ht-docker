@@ -1,4 +1,4 @@
-##This is where the .war files go
+## This is where the .war files go
                                                                 
 Do not track them in Git or upload them to a public repository.
 

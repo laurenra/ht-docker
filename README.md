@@ -1,12 +1,12 @@
-#Run HT app in Docker containers
+# Run HT app in Docker containers
 This builds 2 Docker images that are customized to run HT apps.  One has Java and a Tomcat server and the other has an Apache web server with SSL that acts as a reverse proxy to forward requests to the Tomcat server. They are attached to the same Docker network.
 
-For security reasons, the uPortal .war and .jar files, database connection settings, and digital certificates are not contained in the Docker images. Get those from a developer (see the ht-docker-private tar file below).
+For security reasons, the uPortal .war and .jar files, database connection settings, and digital certificates are not contained in the Docker images. Get those from a developer (see the private-ht-docker tar file below).
 
-##Build container and run it with docker-compose command
+## Build container and run it with docker-compose command
 This assumes that you have the compiled .jar and .war files from the HT project and that you have Docker installed. See [Get Docker](https://www.docker.com/products/overview) at [docker.com](https://www.docker.com/) for how to install Docker.
 
-###Easiest way to build the containers
+### Easiest way to build the containers
 
 1. **git clone** this project, for example:
 
@@ -14,10 +14,10 @@ This assumes that you have the compiled .jar and .war files from the HT project 
     git clone https://github.com/laurenra/ht-docker.git
     ```
     
-2. Get the **ht-docker-private** tar file from a developer, copy it to the project root, **/ht-docker**, and uncompress it there. This file has all the private setup files and digital certificates.
+2. Get the **private-ht-docker** tar file from a developer, copy it to the project root, **/ht-docker**, and uncompress it there. This file has all the private setup files and digital certificates.
 
     ```
-    tar xvf ht-docker-private.tar
+    tar xvf private-ht-docker.tar
     ```
 
 3. Copy the compiled .jar and .war files from your project to the **app-server/wars** directory.
@@ -69,7 +69,7 @@ This assumes that you have the compiled .jar and .war files from the HT project 
     
     When done with the web application, exit the running container's shell with **exit** or **Ctrl+d**.
     
-###Stop the containers
+### Stop the containers
 
 From the directory that contains the **docker-compose.yml** file (or any of its sub-directories):
 ```
@@ -83,7 +83,7 @@ docker stop htweb
 docker stop htapp
 ``` 
 
-###Start the containers
+### Start the containers
 
 From the directory that contains the **docker-compose.yml** file (or any of its sub-directories):
 ```
@@ -97,7 +97,7 @@ docker start htapp
 docker start htweb
 ```
 
-###Delete the containers
+### Delete the containers
 
 From the directory that contains the **docker-compose.yml** file:
 ```
@@ -110,7 +110,7 @@ docker rm htapp
 docker rm htweb
 ```
 
-###Common Docker commands
+### Common Docker commands
 
 | Command                                   | Description                      |
 | ----------------------------------------- | -------------------------------- |
@@ -126,7 +126,7 @@ docker rm htweb
 | docker help                               | List docker commands             |
 | docker {command} --help                   | Show help for specific command   |
 
-###Common Docker Compose commands
+### Common Docker Compose commands
 
 These commands must be run in the directory where docker-compose.yml is located.
 
@@ -144,4 +144,4 @@ These commands must be run in the directory where docker-compose.yml is located.
 Note: any changes you make inside a container will be still be available after restarting the container. They will disappear if you delete the container.
 
 ## Notes about sensitive private setup data
-There are a few files that reside outside the Docker containers on the host computer including digital certificates and database connections. They are in the **ht-docker-private** tar file and are copied to the appropriate directories when you uncompress it from the project root.
+There are a few files that reside outside the Docker containers on the host computer including digital certificates and database connections. They are in the **private-ht-docker** tar file and are copied to the appropriate directories when you uncompress it from the project root.
